@@ -17,8 +17,12 @@ import conf.java.RSSFeedDataProcessed;
 
 public class RSSFeedUtility {
 
+	// Test function
+//	public int returnInt1() {
+//		return 1;
+//	}
 	
-	public RSSFeedDataProcessed loadRSSFeedsFromXML() throws Exception {
+	public RSSFeedDataProcessed loadRSSFeedsFromXML(String xmlPath) throws Exception {
 		RSSFeedDataProcessed rssFeedDataProcessed = new RSSFeedDataProcessed();;
 		
 		// Discontinued properties upload
@@ -31,7 +35,7 @@ public class RSSFeedUtility {
 		//RSS feeds stored in XML file.
 		JAXBContext jaxbContext = JAXBContext.newInstance(RSSFeedData.class);
 		Unmarshaller jaxbUnmarshaller  = jaxbContext.createUnmarshaller();
-		rssFeedDataRaw = (RSSFeedData) jaxbUnmarshaller.unmarshal(new File("conf/testFeeds.xml"));
+		rssFeedDataRaw = (RSSFeedData) jaxbUnmarshaller.unmarshal(new File(xmlPath));
 		
 		// Using a processed Conf Object so we can manipulate it as we want. Right now it's just a 1-1 translation, but in the future for example change inactivityTime to "3m2w1d" and translate it to 95 days.
 		if (rssFeedDataRaw != null && rssFeedDataRaw.getRssFeeds() != null) {
@@ -39,7 +43,7 @@ public class RSSFeedUtility {
 			rssFeedDataProcessed.setInactivityTime(rssFeedDataRaw.getInactivityTime());
 			Map<String, List<String>> rssFeedMap = new HashMap<String, List<String>>();
 			
-			System.out.println("Feeds to Analyze:");
+//			System.out.println("Feeds to Analyze:");
 			
 			for (int n = 0; n < rssFeedDataRaw.getRssFeeds().size(); n++) {
 				rssFeedMap.put(rssFeedDataRaw.getRssFeeds().get(n).getRssFeedName(), rssFeedDataRaw.getRssFeeds().get(n).getRssFeedURLs());
@@ -76,16 +80,19 @@ public class RSSFeedUtility {
 		
 		LocalDate currentLocalDate = LocalDate.now();
 		// Problems with parameters, i.e. no feeds specified feeds, lower bound is after upper bound, lower bound is after current date etc.
-		if (rssFeedMap == null || !(rssFeedMap.size() > 0) || (lowerBound != null && lowerBound.isAfter(currentLocalDate)) || (upperBound != null && upperBound.isBefore(lowerBound))) {
+		if (rssFeedMap == null || !(rssFeedMap.size() > 0) || (lowerBound != null && upperBound != null && lowerBound.isAfter(currentLocalDate)) || (lowerBound != null && upperBound != null && upperBound.isBefore(lowerBound))) {
+			System.out.println("Invalid Parameters");
 			return null;
 		}
+		
+		RSSFeedParser rssFeedParser = new RSSFeedParser();
 		
 		for (Map.Entry<String, List<String>> rssFeedEntry: rssFeedMap.entrySet()) {
 			
 			boolean withinLocalDateRange = false;
 			
 			for(String rssFeedURL : rssFeedEntry.getValue()) {
-				LocalDate latestRSSFeedDate = getLatestUpdateDate(rssFeedURL);
+				LocalDate latestRSSFeedDate = rssFeedParser.getLatestUpdateDate(rssFeedURL);
 				// RSS feed date is within date range boundaries. If lower or upper limit is not specified, then we assume that end is open, i.e. no lower bound means mythical 2000 year old rss feeds would be matched
 				if(latestRSSFeedDate != null && ((lowerBound == null || latestRSSFeedDate.isAfter(lowerBound)) && (upperBound == null || latestRSSFeedDate.isBefore(upperBound)))) {
 					withinLocalDateRange = true;
@@ -107,10 +114,4 @@ public class RSSFeedUtility {
 		
 		return filteredFeedNames;
 	}
-	
-	private LocalDate getLatestUpdateDate(String rssFeedURL) throws Exception {
-		RSSFeedParser rssFeedParser = new RSSFeedParser();
-		return rssFeedParser.getLatestUpdateDate(rssFeedURL);
-	}
-
 }

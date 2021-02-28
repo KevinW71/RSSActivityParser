@@ -1,5 +1,3 @@
-// Utility methods here
-
 package util.java;
 
 import java.io.InputStream;
@@ -36,8 +34,7 @@ public class RSSFeedParser {
 		
 	}
 
-	// narrowly tailored, private.
-	private LocalDate getMaxReturnDateFromEventReader(XMLEventReader eventReader) throws Exception {
+	public LocalDate getMaxReturnDateFromEventReader(XMLEventReader eventReader) throws Exception {
 		LocalDate returnDate = null;
 		
 		if(eventReader == null) {
@@ -63,8 +60,8 @@ public class RSSFeedParser {
 		}
 		return returnDate;
 	}
-	
-	private LocalDate parseDate(String dateString) throws Exception {
+
+	public LocalDate parseDate(String dateString) throws Exception {
 		
 		LocalDate localDate = null;
 		

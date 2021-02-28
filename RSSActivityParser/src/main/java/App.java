@@ -17,7 +17,7 @@ public class App {
 			RSSFeedDataProcessed config = new RSSFeedDataProcessed();
 			
 			RSSFeedUtility rssFeedUtility = new RSSFeedUtility();
-			config = rssFeedUtility.loadRSSFeedsFromXML();
+			config = rssFeedUtility.loadRSSFeedsFromXML("conf/testFeeds.xml");
 			
 			RSSFeedUtility rssFeedParser = new RSSFeedUtility();
 			List<String> feedList = rssFeedParser.filterFeedsByLastActive(config.getRssFeedMap(), config.getInactivityTime());
