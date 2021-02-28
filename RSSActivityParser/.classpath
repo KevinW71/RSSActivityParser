@@ -6,5 +6,9 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="lib" path="lib/jaxb-api.jar"/>
+	<classpathentry kind="lib" path="lib/javax.activation-api.jar"/>
+	<classpathentry kind="lib" path="lib/jaxb-runtime.jar"/>
+	<classpathentry kind="lib" path="lib/istack-commons-runtime.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

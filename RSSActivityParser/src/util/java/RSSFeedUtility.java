@@ -2,13 +2,57 @@
 
 package util.java;
 
+import java.io.File;
 import java.time.LocalDate;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.Unmarshaller;
+
+import conf.java.RSSFeedData;
+import conf.java.RSSFeedDataProcessed;
+
 public class RSSFeedUtility {
 
+	
+	public RSSFeedDataProcessed loadRSSFeedsFromXML() throws Exception {
+		RSSFeedDataProcessed rssFeedDataProcessed = new RSSFeedDataProcessed();;
+		
+		// Discontinued properties upload
+//		Properties props = new Properties();
+//		props.load(null)getClass().getClassLoader().getResourceAsStream("");
+		
+		
+		RSSFeedData rssFeedDataRaw = new RSSFeedData();
+		
+		//RSS feeds stored in XML file.
+		JAXBContext jaxbContext = JAXBContext.newInstance(RSSFeedData.class);
+		Unmarshaller jaxbUnmarshaller  = jaxbContext.createUnmarshaller();
+		rssFeedDataRaw = (RSSFeedData) jaxbUnmarshaller.unmarshal(new File("conf/testFeeds.xml"));
+		
+		// Using a processed Conf Object so we can manipulate it as we want. Right now it's just a 1-1 translation, but in the future for example change inactivityTime to "3m2w1d" and translate it to 95 days.
+		if (rssFeedDataRaw != null && rssFeedDataRaw.getRssFeeds() != null) {
+			
+			rssFeedDataProcessed.setInactivityTime(rssFeedDataRaw.getInactivityTime());
+			Map<String, List<String>> rssFeedMap = new HashMap<String, List<String>>();
+			
+			System.out.println("Feeds to Analyze:");
+			
+			for (int n = 0; n < rssFeedDataRaw.getRssFeeds().size(); n++) {
+				rssFeedMap.put(rssFeedDataRaw.getRssFeeds().get(n).getRssFeedName(), rssFeedDataRaw.getRssFeeds().get(n).getRssFeedURLs());
+				System.out.println(rssFeedDataRaw.getRssFeeds().get(n).getRssFeedName() + ": " + rssFeedDataRaw.getRssFeeds().get(n).getRssFeedURLs());
+				
+			}
+			rssFeedDataProcessed.setRssFeedMap(rssFeedMap);
+		}
+		
+		return rssFeedDataProcessed;
+	}
+	
+	
 	// Wrapper Function, for last active
 	public List<String> filterFeedsByLastActive(Map<String, List<String>> rssFeedMap, int daysInactive) throws Exception {
 		List<String> filteredFeeds = new LinkedList<String>();

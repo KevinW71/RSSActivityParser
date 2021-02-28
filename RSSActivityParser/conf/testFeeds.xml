@@ -1,0 +1,23 @@
+<RSSFeedData>
+	<InactivityTime>15</InactivityTime>
+	<RSSFeeds>
+		<RSSFeed>
+			<RSSFeedName>The Daily by The New York Times</RSSFeedName>
+			<RSSFeedURLs>
+				<RSSFeedURL>https://feeds.simplecast.com/54nAGcIl</RSSFeedURL>
+			</RSSFeedURLs>
+		</RSSFeed>
+		<RSSFeed>
+			<RSSFeedName>The Apology Line</RSSFeedName>
+			<RSSFeedURLs>
+				<RSSFeedURL>https://rss.art19.com/apology-line</RSSFeedURL>
+			</RSSFeedURLs>
+		</RSSFeed>
+		<RSSFeed>
+			<RSSFeedName>The Bible in a Year</RSSFeedName>
+			<RSSFeedURLs>
+				<RSSFeedURL>https://feeds.fireside.fm/bibleinayear/rss</RSSFeedURL>
+			</RSSFeedURLs>
+		</RSSFeed>
+	</RSSFeeds>
+</RSSFeedData>
