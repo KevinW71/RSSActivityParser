@@ -37,7 +37,7 @@ public class RSSFeedUtility {
 		Unmarshaller jaxbUnmarshaller  = jaxbContext.createUnmarshaller();
 		rssFeedDataRaw = (RSSFeedData) jaxbUnmarshaller.unmarshal(new File(xmlPath));
 		
-		// Using a processed Conf Object so we can manipulate it as we want. Right now it's just a 1-1 translation, but in the future for example change inactivityTime to "3m2w1d" and translate it to 95 days.
+		// Using a processed Conf Object so we can manipulate it as we want. Right now it's just a 1-1 translation, but in the future for example change inactivityTime to "3m2w1d" and translate it to 105 days.
 		if (rssFeedDataRaw != null && rssFeedDataRaw.getRssFeeds() != null) {
 			
 			rssFeedDataProcessed.setInactivityTime(rssFeedDataRaw.getInactivityTime());
